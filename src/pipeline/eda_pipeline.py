@@ -40,13 +40,8 @@ def run_eda_pipeline(user_query):
         # Create SQL query chain
         chain = create_sql_chain(db, EDA_PROMPT_TEMPLATE)
 
-        # Read database context
-        try:
-            with open('/home/nashtech/PycharmProjects/Data_Visualization/db_context.txt', 'r') as file:
-                db_context = file.read()
-        except IOError as e:
-            logger.error(f"Error reading database context file: {str(e)}", exc_info=True)
-            raise EDAError("Unable to read database context file.") from e
+        # Generate database context
+        db_context = db.get_context()
 
         # Generate and execute SQL query
         query = chain.invoke({"question": user_query, "top_k": 3, "table_info": db_context})

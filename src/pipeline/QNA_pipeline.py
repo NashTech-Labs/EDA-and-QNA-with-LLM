@@ -39,13 +39,8 @@ def run_qna_pipeline(user_query):
         execute_query = QuerySQLDataBaseTool(db=db)
         write_query = create_sql_chain(db, QNA_PROMPT_TEMPLATE)
 
-        # Read database context
-        try:
-            with open('/home/nashtech/PycharmProjects/Data_Visualization/db_context.txt', 'r') as file:
-                db_context = file.read()
-        except IOError as e:
-            logger.error(f"Error reading database context file: {str(e)}", exc_info=True)
-            raise QNAError("Unable to read database context file.") from e
+        # Generate database context
+        db_context = db.get_context()
 
         # Generate SQL query
         query = write_query.invoke({"question": user_query, "top_k": 3, "table_info": db_context})
