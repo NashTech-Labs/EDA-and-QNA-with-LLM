@@ -87,17 +87,7 @@ streamlit run app.py
 4. View the results:
    - For EDA: Interactive visualizations with editing capabilities
    - For Q&A: Text answers with supporting data tables
-## UI Screenshots
-You can ask questions about your data and get the response in natural language - 
-![Screenshot from 2024-09-12 12-06-42.png](assets/Screenshot%20from%202024-09-12%2012-06-42.png)
-You can ask for visualizations from your data - 
-![Screenshot from 2024-09-12 18-31-00.png](assets/Screenshot%20from%202024-09-12%2018-31-00.png)
-The data retrieved from SQL is also shown -
-![Screenshot from 2024-09-12 18-31-12.png](assets/Screenshot%20from%202024-09-12%2018-31-12.png)
-You can also edit your chart, by providing query in natural language - 
-![Screenshot from 2024-09-12 18-33-41.png](assets/Screenshot%20from%202024-09-12%2018-33-41.png)
-Then you can see the edited chart -
-![Screenshot from 2024-09-12 18-34-07.png](assets/Screenshot%20from%202024-09-12%2018-34-07.png)
+
 ## Features Details
 
 ### EDA Pipeline
