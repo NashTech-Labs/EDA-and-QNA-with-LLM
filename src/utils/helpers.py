@@ -15,6 +15,8 @@ from decimal import Decimal
 import psycopg2
 from langchain_core.runnables import RunnablePassthrough
 from dotenv import load_dotenv
+import mysql.connector
+from mysql.connector import Error
 load_dotenv()
 
 
@@ -75,7 +77,26 @@ def create_sql_chain(db, prompt_template):
 
 
 # Execute SQL Query
-def execute_sql_query(query):
+def execute_psql_query_for_ans(query):
+    try:
+        logger.info(f"Executing SQL query: {query}")
+        mydb = psycopg2.connect(database=os.getenv("DB_DATABASE"),
+                                user=os.getenv("DB_USER"),
+                                host=os.getenv("DB_HOST"),
+                                password=os.getenv("DB_PASSWORD"),
+                                port=os.getenv("DB_PORT"))
+        cursor = mydb.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        logger.info("SQL query executed successfully.")
+        return data
+    except Exception as e:
+        logger.error(f"Error executing SQL query: {e}")
+        raise
+
+def execute_psql_query_for_data(query):
     try:
         logger.info(f"Executing SQL query: {query}")
         mydb = psycopg2.connect(database=os.getenv("DB_DATABASE"),
@@ -95,6 +116,47 @@ def execute_sql_query(query):
         logger.error(f"Error executing SQL query: {e}")
         raise
 
+# Execute SQL Query
+def execute_sql_query_for_ans(query):
+    try:
+        logger.info(f"Executing SQL query: {query}")
+        mydb = mysql.connector.connect(
+            host='localhost',
+            user='sid',
+            password='Sid123',
+            database='propertiesdb'
+        )
+        cursor = mydb.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        logger.info("SQL query executed successfully.")
+        return data
+    except Exception as e:
+        logger.error(f"Error executing SQL query: {e}")
+        raise
+
+def execute_sql_query_for_data(query):
+    try:
+        logger.info(f"Executing SQL query: {query}")
+        mydb = mysql.connector.connect(
+            host='localhost',
+            user='sid',
+            password='Sid123',
+            database='propertiesdb'
+        )
+        cursor = mydb.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
+        column_names = [desc[0] for desc in cursor.description]
+        cursor.close()
+        mydb.close()
+        logger.info("SQL query executed successfully.")
+        return data, column_names
+    except Exception as e:
+        logger.error(f"Error executing SQL query: {e}")
+        raise
 
 # Create Pandas DataFrame
 def create_dataframe(data, column_names):
@@ -194,7 +256,7 @@ def create_qna_chain(write_query, execute_query, answer):
         chain = (
             RunnablePassthrough.assign(query=write_query)
             .assign(cleaned_query=lambda x: clean_sql_query(x['query']))
-            .assign(result=lambda x: execute_query.run(x['cleaned_query']))
+            .assign(result=lambda x: execute_query(x['cleaned_query']))
             | answer
         )
         logger.info("QnA chain created successfully.")

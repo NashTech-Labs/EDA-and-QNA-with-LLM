@@ -55,7 +55,7 @@ EDA_PROMPT_TEMPLATE = FewShotPromptTemplate(
 QNA_PROMPT_TEMPLATE = FewShotPromptTemplate(
     examples=POSTGRESQL_EXAMPLES,
     example_prompt=EXAMPLE_PROMPT,
-    prefix="You are a PostgreSQL expert. Given an input question, create a syntactically correct SQL query to run and retrieve relevant data for the user query from the database. Unless otherwise specificed, do not return more than {top_k} rows.\n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding SQL queries.",
+    prefix="You are a PostgreSQL expert. Given an user input query, create a syntactically correct PostgreSQL query to run and retrieve all relevant raw data from the database which is required for the user query. Rather than only {top_k} rows return all the rows of the relevant data for the user query. \n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding PostgreSQL queries.",
     suffix="User input: {input}\nSQL query: ",
     input_variables=["input", "top_k", "table_info"],
 )

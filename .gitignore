@@ -3,3 +3,7 @@ nashtech-ai-dev-389315-538443c06e90.json
 env.sh
 *.idea
 *__pycache__
+data_app.py
+financial_sample_data.csv
+db_context.txt
+test.py
