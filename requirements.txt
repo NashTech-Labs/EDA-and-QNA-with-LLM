@@ -7,4 +7,4 @@ lida==0.0.14
 matplotlib==3.9.1.post1
 pandas==2.2.2
 python-dotenv==1.0.1
-streamlit==1.38.0
+streamlit==1.38.0uv
